@@ -111,7 +111,7 @@ function render() {
 function renderCurve() {
   const k = state.sel, Q = P.D.queues;
   const r = R.cert.byQueue[k];
-  const W = 470, H = 292, m = { l: 40, r: 14, t: 14, b: 32 };
+  const W = 340, H = 262, m = { l: 36, r: 10, t: 14, b: 32 };
   const pts = r.curve.filter(p => p.n > 0);
   const yMax = Math.max(state.alpha * 2.4, ...pts.filter(p => p.n / r.total > 0.15).map(p => Math.min(p.ucb, 0.2)));
   const xMin = Math.max(0, Math.floor((pts[0].n / r.total) * 10) / 10);
@@ -121,16 +121,16 @@ function renderCurve() {
   const band = pts.map((p, i) => `${i ? 'L' : 'M'}${x(p.n / r.total).toFixed(1)},${y(p.ucb).toFixed(1)}`).join('') + pts.slice().reverse().map(p => `L${x(p.n / r.total).toFixed(1)},${y(p.e / p.n).toFixed(1)}`).join('') + 'Z';
   const ticksY = [0, yMax / 4, yMax / 2, 3 * yMax / 4, yMax];
   const naivePt = r.curve.find(p => Math.abs(p.lam - 0.9) < 1e-9);
-  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img">`;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" style="display:block">`;
   for (const t of ticksY) svg += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}" stroke="#ebebeb"/><text class="ax" x="${m.l - 6}" y="${y(t) + 3.5}" text-anchor="end">${(t * 100).toFixed(t * 100 < 10 ? 1 : 0)}%</text>`;
   for (let a = Math.ceil(xMin * 10) / 10; a <= 1.0001; a += xMin >= 0.5 ? 0.1 : 0.2) svg += `<text class="ax" x="${x(a)}" y="${H - 14}" text-anchor="middle">${Math.round(a * 100)}%</text>`;
-  svg += `<text class="ax" x="${W - m.r}" y="${H - 1}" text-anchor="end">share of the queue's faxes auto-routed →</text>`;
+  svg += `<text class="ax" x="${W - m.r}" y="${H - 1}" text-anchor="end">share of this queue's faxes auto-routed →</text>`;
   svg += `<path d="${band}" fill="#1cdbe9" opacity=".14"/>`;
   svg += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(state.alpha)}" y2="${y(state.alpha)}" stroke="#fa934e" stroke-dasharray="4 4" stroke-width="1.5"/>`;
   svg += `<text class="ax-mono" x="${m.l + 6}" y="${y(state.alpha) - 5}" style="fill:#b9682f">target ${fmtPct(state.alpha, 0)}</text>`;
   svg += `<path d="${line(p => p.e / p.n)}" fill="none" stroke="#101604" stroke-width="1.3"/>`;
   svg += `<path d="${line(p => p.ucb)}" fill="none" stroke="#0098a3" stroke-width="2"/>`;
-  if (naivePt) { const a = naivePt.n / r.total, v = naivePt.e / naivePt.n; svg += `<circle cx="${x(a)}" cy="${y(v)}" r="5" fill="#fff" stroke="#fa934e" stroke-width="2"/><text class="ax-mono" x="${x(a) - 8}" y="${y(v) + 16}" text-anchor="end" style="fill:#b9682f">0.90 rule</text>`; }
+  if (naivePt) { const a = naivePt.n / r.total, v = naivePt.e / naivePt.n; svg += `<circle cx="${x(a)}" cy="${y(v)}" r="5" fill="#fff" stroke="#fa934e" stroke-width="2"/><text class="ax-mono" x="${x(a) - 8}" y="${y(v) - 8}" text-anchor="end" style="fill:#b9682f">0.90 rule</text>`; }
   if (r.cert) { const a = r.cert.n / r.total; svg += `<line x1="${x(a)}" x2="${x(a)}" y1="${m.t}" y2="${H - m.b}" stroke="#0098a3" stroke-dasharray="2 3"/><circle cx="${x(a)}" cy="${y(r.cert.ucb)}" r="5" fill="#0098a3" stroke="#fff" stroke-width="2"/><text class="ax-mono" x="${x(a) - 6}" y="${m.t + 10}" text-anchor="end" style="fill:#0098a3">λ ≥ ${r.cert.lam.toFixed(3)}</text>`; }
   svg += `</svg>`;
   $('curve').innerHTML = svg;
@@ -153,14 +153,14 @@ function renderCurve() {
 // ---------- sentinel ----------
 function renderSentinel(firstNovel) {
   const lp = P.livePreds, n = lp.length;
-  const W = 760, H = 430, m = { l: 40, r: 14, t: 16, b: 104 };
+  const W = 650, H = 400, m = { l: 36, r: 10, t: 16, b: 104 };
   const t0 = lp[0].t, t1 = lp[n - 1].t;
   const x = (t) => m.l + (t - t0) / (t1 - t0) * (W - m.l - m.r);
   const yMaxLog = 6;
   const y = (R) => m.t + (1 - Math.min(Math.log10(Math.max(R, 1)), yMaxLog) / yMaxLog) * (H - m.t - m.b);
   let d = '';
   for (let i = 0; i < n; i += 1) d += `${i ? 'L' : 'M'}${x(lp[i].t).toFixed(1)},${y(R.sr.series[i]).toFixed(1)}`;
-  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}">`;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block">`;
   for (let e = 0; e <= yMaxLog; e += 2) svg += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(10 ** e)}" y2="${y(10 ** e)}" stroke="#ebebeb"/><text class="ax" x="${m.l - 6}" y="${y(10 ** e) + 3.5}" text-anchor="end">${e === 0 ? '1' : '10' + ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶'][e]}</text>`;
   // weekly ticks
   for (let t = t0; t <= t1; t += 7 * 864e5) svg += `<text class="ax" x="${x(t)}" y="${H - m.b + 16}" text-anchor="middle">${fmtDate(t)}</text>`;
