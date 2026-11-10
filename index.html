@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fax Routing Agent · Autonomy certificate · Trase Origin</title>
+<link rel="icon" href="assets/logo-icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="side-top">
+      <img class="side-logo" src="assets/logo.svg" alt="Trase">
+      <button class="ws">
+        <span class="ws-dot"></span>
+        <span class="ws-main"><span class="ws-name">Riverside Health</span><span class="ws-env">Production · your VPC</span></span>
+        <iconify-icon icon="carbon:chevron-sort" width="14"></iconify-icon>
+      </button>
+    </div>
+    <nav class="nav">
+      <div class="nav-label">Trase Origin</div>
+      <a class="nav-item"><iconify-icon icon="carbon:home" width="17"></iconify-icon>Home</a>
+      <a class="nav-item is-active"><iconify-icon icon="carbon:bot" width="17"></iconify-icon>Agents<span class="nav-count">14</span></a>
+      <a class="nav-item"><iconify-icon icon="carbon:policy" width="17"></iconify-icon>Policies</a>
+      <a class="nav-item"><iconify-icon icon="carbon:task-approved" width="17"></iconify-icon>Approvals<span class="nav-count nav-count--warn" id="navApprovals">3</span></a>
+      <a class="nav-item"><iconify-icon icon="carbon:blockchain" width="17"></iconify-icon>Audit &amp; evidence</a>
+      <a class="nav-item"><iconify-icon icon="carbon:plug" width="17"></iconify-icon>Connectors</a>
+      <a class="nav-item"><iconify-icon icon="carbon:model-alt" width="17"></iconify-icon>Models</a>
+      <a class="nav-item"><iconify-icon icon="carbon:currency-dollar" width="17"></iconify-icon>Costs</a>
+      <div class="nav-label">Build</div>
+      <a class="nav-item"><iconify-icon icon="carbon:development" width="17"></iconify-icon>Trase Arena</a>
+      <a class="nav-item"><iconify-icon icon="carbon:catalog" width="17"></iconify-icon>Trase Leagues</a>
+    </nav>
+    <div class="side-foot">
+      <a class="nav-item"><iconify-icon icon="carbon:settings" width="17"></iconify-icon>Settings</a>
+      <div class="me"><span class="me-av">AR</span><span class="me-main"><span class="me-name">Dr. A. Reyes</span><span class="me-role">Division admin</span></span></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="top">
+      <div class="crumbs">
+        <span>Agents</span><iconify-icon icon="carbon:chevron-right" width="14"></iconify-icon>
+        <span>Cardiology intake</span><iconify-icon icon="carbon:chevron-right" width="14"></iconify-icon>
+        <span class="crumb-cur">Fax Routing Agent</span>
+      </div>
+      <div class="top-right">
+        <span class="chain"><span class="dot"></span>hash chain intact</span>
+        <div class="search"><iconify-icon icon="carbon:search" width="15"></iconify-icon>Search agents, runs, faxes<kbd>⌘K</kbd></div>
+        <iconify-icon class="top-ic" icon="carbon:notification" width="18"></iconify-icon>
+      </div>
+    </header>
+
+    <section class="head">
+      <div class="head-l">
+        <div class="agent-ic"><iconify-icon icon="carbon:document-multiple-01" width="22"></iconify-icon></div>
+        <div>
+          <div class="head-title"><h1>Fax Routing Agent</h1><span class="badge badge--allow">Live</span><span class="mono-chip">v3.2 · cardiology-intake-slm</span></div>
+          <p class="head-sub">Routes inbound faxes to 10 cardiology queues and escalates to the intake team when unsure.</p>
+        </div>
+      </div>
+      <div class="head-r">
+        <button class="pill pill--ghost"><iconify-icon icon="carbon:play" width="14"></iconify-icon>Test in Arena</button>
+        <button class="pill" id="exportBtn">Export evidence pack →</button>
+      </div>
+    </section>
+
+    <nav class="tabs">
+      <a>Overview</a><a>Workflow</a><a>Access</a><a>Guardrails</a><a>Monitoring</a>
+      <a class="is-active">Autonomy certificate <span class="new">New</span></a><a>Audit trail</a>
+    </nav>
+
+    <section class="content" id="content">
+      <div class="controls card">
+        <div class="ctl">
+          <span class="ctl-label">Target error on auto-routed faxes</span>
+          <div class="seg" id="segAlpha"></div>
+        </div>
+        <div class="ctl">
+          <span class="ctl-label">Confidence</span>
+          <div class="seg" id="segDelta"></div>
+        </div>
+        <div class="ctl">
+          <span class="ctl-label">Guarantee holds</span>
+          <div class="seg" id="segSim"></div>
+        </div>
+        <div class="ctl ctl--grow">
+          <span class="ctl-label">Calibration evidence</span>
+          <div class="ctl-val" id="calInfo"></div>
+        </div>
+        <div class="ctl ctl--state" id="certState"></div>
+      </div>
+
+      <div class="kpis" id="kpis"></div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="card-h">
+            <div><h3>Queue certificates</h3><p id="tblSub"></p></div>
+            
+          </div>
+          <table class="tbl" id="tbl"></table>
+        </div>
+        <div class="card" id="curveCard">
+          <div class="card-h"><div><h3 id="curveTitle">Risk vs. autonomy</h3><p id="curveSub"></p></div></div>
+          <div id="curve"></div>
+          <div class="curve-legend" id="curveLegend"></div>
+          <div class="curve-note" id="curveNote"></div>
+        </div>
+      </div>
+
+      <div class="grid2 grid2--b">
+        <div class="card">
+          <div class="card-h">
+            <div><h3>Exchangeability sentinel</h3><p>The certificate assumes live faxes look like the calibration faxes. The sentinel tests that assumption on every fax.</p></div>
+            <span id="sentState"></span>
+          </div>
+          <div id="sentinel"></div>
+          <div class="curve-legend" id="sentLegend"></div>
+        </div>
+        <div class="card" id="whatCard">
+          <div class="card-h"><div><h3>What changed</h3><p id="whatSub"></p></div></div>
+          <div id="what"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-h">
+          <div><h3>Certificate events</h3><p>Written to the immutable audit trail and included in the signed evidence pack.</p></div>
+        </div>
+        <div class="log" id="log"></div>
+      </div>
+
+      <footer class="foot">Unofficial concept demo by Mohith Gajjela. Not affiliated with Trase. Synthetic data (seeded generator in <span class="mono">scripts/generate.mjs</span>); every number is computed in your browser by <span class="mono">core/certify.mjs</span>.</footer>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
